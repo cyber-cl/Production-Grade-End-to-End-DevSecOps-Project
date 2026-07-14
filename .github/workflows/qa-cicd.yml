@@ -19,7 +19,7 @@ jobs:
             - name: Run Gitleaks scan
               run: |
                 docker run --rm \
-                -v $(github.workspace):/repo \
+                -v $(pwd):/repo \
                 zricethezav/gitleaks:latest detect \
                 --source = /repo \
                 --report-format json \
