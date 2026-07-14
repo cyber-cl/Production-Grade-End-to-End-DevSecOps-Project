@@ -32,3 +32,91 @@ jobs:
                 name: gitleaks-report
                 path: gitleaks-report.json
                 if-no-files-found: warn
+    
+    chekov-terraform-scan:
+        name: Checkov Terraform Scan
+        runs-on: ubuntu-latest
+        needs: gitleaks-scan
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v4
+
+            - name: Python Setup
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.11'
+            
+            - name: Install Checkov
+              run: pip install checkov
+
+            - name: Run Checkov scan
+              run: |
+                checkov -d . \
+                --framework terraform \
+                --quiet --output json > checkov-report.json || true
+
+            - name: Upload Checkov report
+              uses: actions/upload-artifact@v7
+              with:
+                name: checkov-report
+                path: checkov-report.json
+                if-no-files-found: warn
+
+
+    checkov-kubernetes-scan:
+        name: Checkov Kubernetes Scan
+        runs-on: ubuntu-latest
+        needs: gitleaks-scan
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v4
+
+            - name: Python Setup
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.11'
+            
+            - name: Install Checkov
+              run: pip install checkov
+
+            - name: Run Checkov scan
+              run: |
+                checkov -d . \
+                --framework kubernetes \
+                --quiet --output json > checkov-k8s-report.json || true
+
+            - name: Upload Checkov report
+              uses: actions/upload-artifact@v7
+              with:
+                name: checkov-k8s-report
+                path: checkov-k8s-report.json
+                if-no-files-found: warn
+
+    chekov-dockerfile-scan:
+        name: Checkov Dockerfile Scan
+        runs-on: ubuntu-latest
+        needs: gitleaks-scan
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v4
+
+            - name: Python Setup
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.11'
+            
+            - name: Install Checkov
+              run: pip install checkov
+
+            - name: Run Checkov scan
+              run: |
+                checkov -d . \
+                --framework dockerfile \
+                --quiet --output json > checkov-dockerfile-report.json || true
+
+            - name: Upload Checkov report
+              uses: actions/upload-artifact@v7  
+              with:
+                name: checkov-dockerfile-report
+                path: checkov-dockerfile-report.json
+                if-no-files-found: warn
