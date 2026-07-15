@@ -466,4 +466,3 @@ jobs:
             - name: Push Docker image to Docker Hub
               run: |
                 docker push prashantrock777/nodejs-app:${{ github.sha }}
-                docker push prashantrock777/nodejs-app:latest
