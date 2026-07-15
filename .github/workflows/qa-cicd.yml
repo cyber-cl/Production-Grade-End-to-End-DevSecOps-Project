@@ -360,4 +360,13 @@ jobs:
                 SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
                 SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
+            - name: Example step to demonstrate how to use the output of the SonarQube Quality Gate check
+              run: |
+                if [ "${{ steps.sonar-quality-gate-check.outputs.quality_gate_status }}" != "OK" ]; then
+                  echo "SonarQube Quality Gate failed. Status: ${{ steps.sonar-quality-gate-check.outputs.quality_gate_status }}"
+                  exit 1
+                else
+                  echo "SonarQube Quality Gate passed. Status: ${{ steps.sonar-quality-gate-check.outputs.quality_gate_status }}"
+                fi
+
 
