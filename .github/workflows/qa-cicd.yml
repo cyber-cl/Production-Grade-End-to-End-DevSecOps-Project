@@ -63,7 +63,7 @@ jobs:
                 if-no-files-found: warn
 
 
-    checkov-kubernetes-scan:
+    chekov-kubernetes-scan:
         name: Checkov Kubernetes Scan
         runs-on: ubuntu-latest
         needs: gitleaks-scan
@@ -220,3 +220,70 @@ jobs:
                 name: trivy-server-table-report
                 path: trivy-server-report.txt
                 if-no-files-found: warn
+
+    client-eslint-scan:
+        name: Client ESLint Scan
+        runs-on: ubuntu-latest
+        needs: 
+            - client-trivy-fs-scan
+            - chekov-terraform-scan
+            - chekov-kubernetes-scan    
+            - chekov-dockerfile-scan
+        defaults:
+          run:
+            working-directory: client
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                node-version: '20'
+                cache: 'npm'
+                cache-dependency-path: client/package-lock.json
+
+            - name: Install dependencies
+              run: |
+                cd client
+                npm install
+
+            - name: Run ESLint scan
+              run: |
+                cd client
+                npm run lint --if-present
+                continue-on-error || true
+
+    server-eslint-scan:
+        name: Server ESLint Scan
+        runs-on: ubuntu-latest
+        needs: 
+            - server-trivy-fs-scan
+            - chekov-terraform-scan
+            - chekov-kubernetes-scan    
+            - chekov-dockerfile-scan
+        defaults:
+          run:
+            working-directory: server
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                node-version: '20'
+                cache: 'npm'
+                cache-dependency-path: server/package-lock.json
+
+            - name: Install dependencies
+              run: |
+                cd server
+                npm install
+
+            - name: Run ESLint scan
+              run: |
+                cd server
+                npm run lint --if-present
+                continue-on-error || true
+
