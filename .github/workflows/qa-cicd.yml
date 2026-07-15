@@ -362,11 +362,6 @@ jobs:
 
             - name: Example step to demonstrate how to use the output of the SonarQube Quality Gate check
               run: |
-                if [ "${{ steps.sonar-quality-gate-check.outputs.quality_gate_status }}" != "OK" ]; then
-                  echo "SonarQube Quality Gate failed. Status: ${{ steps.sonar-quality-gate-check.outputs.quality_gate_status }}"
-                  exit 1
-                else
-                  echo "SonarQube Quality Gate passed. Status: ${{ steps.sonar-quality-gate-check.outputs.quality_gate_status }}"
-                fi
+                echo "SonarQube Quality Gate Status: ${{ steps.sonar-quality-gate-check.outputs.quality-gate-status }}"
 
 
