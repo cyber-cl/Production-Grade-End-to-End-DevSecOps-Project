@@ -249,7 +249,6 @@ jobs:
 
             - name: Run ESLint scan
               run: |
-                cd client
                 npm run lint --if-present
                 continue-on-error || true
 
@@ -281,7 +280,6 @@ jobs:
 
             - name: Run ESLint scan
               run: |
-                cd server
                 npm run lint --if-present
                 continue-on-error || true
 
