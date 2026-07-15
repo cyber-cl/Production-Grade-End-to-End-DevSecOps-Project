@@ -245,8 +245,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                cd client
-                npm install
+                npm ci
 
             - name: Run ESLint scan
               run: |
@@ -278,8 +277,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                cd server
-                npm install
+                npm ci
 
             - name: Run ESLint scan
               run: |
