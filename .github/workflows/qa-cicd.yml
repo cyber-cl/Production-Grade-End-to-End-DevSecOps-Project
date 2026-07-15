@@ -463,6 +463,22 @@ jobs:
                 path: trivy-docker-image-report.txt
                 if-no-files-found: warn
 
+            - name: Generate source SBOM
+              uses: anchore/sbom-action@v0
+              with:
+                path: .
+                format: spdx-json
+                output-file: source-sbom.spde.json
+                upload-artifact: true
+
+            - name: Generate Image SBOM
+              uses: anchore/sbom-action@v0
+              with:
+                image: prashantrock777/nodejs-app:${{ github.sha }}
+                format: spdx-json
+                output-file: image-sbom.spde.json
+                upload-artifact: true
+
             - name: Push Docker image to Docker Hub
               run: |
                 docker push prashantrock777/nodejs-app:${{ github.sha }}
